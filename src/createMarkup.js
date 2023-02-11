@@ -1,4 +1,5 @@
-export{createCardMarkup,createListMarkup} 
+export { createCardMarkup, createListMarkup } 
+
 function createCardMarkup(data) {
   const { name, capital, population, flags, languages } = data[0];
   const languagesOfCountry = Object.values(languages).join('');

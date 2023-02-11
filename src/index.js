@@ -23,32 +23,27 @@ function onFormSearchInput(e) {
   }
   fetchCountries(country)
     .then(data => {
-      console.log(data);
-
       if (data.length === 1) {
         clearMarkup();
         renderCardMarkup(data);
-      } else {
+      } else if (data.length >= 2 && data.length <= 10) {
         clearMarkup();
-        if (data.length >= 2 && data.length <= 10) {
-          renderListMarkup(data);
-        } else {
-          Notify.info(
-            'Too many matches found. Please enter a more specific name.'
-          );
-        }
+        renderListMarkup(data);
+      } else {
+        onManyMatchesFound();
       }
     })
+
     .catch(error => {
+      console.log(error.massege);
+      onIncorrectInput();
       clearMarkup();
-      Notify.failure('Oops, there is no country with that name');
-      console.log(error.message);
     });
 }
+
 function renderCardMarkup(data) {
   const markup = createCardMarkup(data);
   refs.countryInfo.innerHTML = markup;
-  console.log(markup);
 }
 function renderListMarkup(data) {
   data.forEach(country => {
@@ -59,4 +54,12 @@ function renderListMarkup(data) {
 function clearMarkup() {
   refs.countryInfo.innerHTML = '';
   refs.countryList.innerHTML = '';
+}
+
+function onManyMatchesFound() {
+  Notify.info('Too many matches found. Please enter a more specific name.');
+}
+
+function onIncorrectInput() {
+  Notify.failure('Oops, there is no country with that name');
 }
